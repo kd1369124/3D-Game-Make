@@ -22,3 +22,8 @@ void CharacterBase::DrawUnLit()
 	KdGameObject::DrawUnLit();
 
 }
+
+void CharacterBase::DrawSprite()
+{
+	KdGameObject::DrawSprite();
+}

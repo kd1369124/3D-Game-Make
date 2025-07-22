@@ -31,7 +31,9 @@ void KdFPSController::Update()
 	LARGE_INTEGER now;
 	QueryPerformanceCounter(&now);
 
-	m_deltaTime = float(now.QuadPart - m_prevTime.QuadPart) / float(m_frequency.QuadPart);
+	double elapsedSec = double(now.QuadPart - m_frameStartCounter.QuadPart) / m_frequency.QuadPart;
+
+	m_deltaTime = static_cast<float>(elapsedSec);
 
 	m_prevTime = now;
 
@@ -82,11 +84,11 @@ void KdFPSController::Control()
 	{
 		double waitTime = timePerFrame - elapsed;
 
-		if (waitTime > 1.0)
-		{
-			std::unique_lock<std::mutex> lk(m_cvMutex);
-			m_cv.wait_for(lk, std::chrono::duration<double, std::milli>(waitTime - 0.5));
-		}
+		//if (waitTime > 1.0)
+		//{
+		//	std::unique_lock<std::mutex> lk(m_cvMutex);
+		//	m_cv.wait_for(lk, std::chrono::duration<double, std::milli>(waitTime - 0.5));
+		//}
 
 		// 残りをスピンウェイトで微調整
 		while (true)
@@ -94,6 +96,9 @@ void KdFPSController::Control()
 			QueryPerformanceCounter(&now);
 			elapsed = double(now.QuadPart - m_frameStartCounter.QuadPart) / double(m_frequency.QuadPart) * 1000.0;
 			if (elapsed >= timePerFrame) break;
+
+
+			_mm_pause(); 
 		}
 	}
 
@@ -112,10 +117,10 @@ void KdFPSController::Monitoring()
 
 	double elapsed = double(now.QuadPart - m_monitorBeginTime.QuadPart) / double(m_frequency.QuadPart);
 
-	if (elapsed >= 0.5) // 0.5秒おき
+	if (elapsed >= 0.5f) // 0.5秒おき
 	{
-		m_nowfps = int(m_fpsCnt / elapsed);
-		m_monitorBeginTime = now;
+		m_nowfps = static_cast<float>(m_fpsCnt) / static_cast<float>(elapsed);
 		m_fpsCnt = 0;
+		m_monitorBeginTime = now;
 	}
 }

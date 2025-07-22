@@ -34,7 +34,6 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_  HINSTANCE, _In_ LPSTR , _In_ int)
 	// COM解放
 	CoUninitialize();
 
-	timeEndPeriod(1);
 
 	return 0;
 }
@@ -347,4 +346,7 @@ void Application::Release()
 
 	// ウィンドウ削除
 	m_window.Release();
+
+
+	timeEndPeriod(1);
 }

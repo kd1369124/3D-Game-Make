@@ -40,8 +40,12 @@ void GameScene::OnGui()
 				{
 					if (!comp) continue;
 
-					ImGui::BulletText("%s", comp->GetComponentName().c_str());
-					comp->OnImGui();
+					if (ImGui::TreeNode("%s", comp->GetComponentName().c_str()))
+					{
+
+						comp->OnImGui(); // コンポーネントの OnImGui を呼ぶ
+						ImGui::TreePop();
+					}
 				}
 				ImGui::TreePop();
 			}
@@ -49,8 +53,12 @@ void GameScene::OnGui()
 
 		ImGui::TreePop();
 	}
+	if( ImGui::Button("Add Comprnent") ) // プレイヤー追加ボタン
+	{
+
+	}
 	
-	//// 例: 選択オブジェクトの詳細
+	// 例: 選択オブジェクトの詳細
 	//if (!m_selectedObj.expired())
 	//{
 	//	if (auto selected = m_selectedObj.lock())

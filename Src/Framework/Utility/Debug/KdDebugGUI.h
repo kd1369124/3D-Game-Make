@@ -119,7 +119,7 @@ public:
 		CreateEntity,	// Entityの生成
 		DestroyEntity,	// Entityの破棄
 		ChangeScene,	// シーンの変更
-
+		AddComponent,	// コンポーネントの追加
 	};
 
 	void GuiInit();

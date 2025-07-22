@@ -70,9 +70,11 @@ void KdDebugGUI::GuiProcess()
 		// -------- Debug タブ --------
 		if (ImGui::BeginTabItem("Debug"))
 		{
+
+			//ImGui::Text("FPS: %.1f", 1.0f / Application::Instance().GetDeltaTime());
 			ImGui::Text("MainFPS: %d", Application::Instance().GetNowFPS());
 			ImGui::Text("SubFPS : %d", Application::Instance().GetSubThreadFPS());
-			ImGui::Text("DeltaTime: %.4f", Application::Instance().GetDeltaTime());
+			ImGui::Text("DeltaTime: %.5f", Application::Instance().GetDeltaTime());
 
 			static int currentScene = 0;
 			const char* scenes[] = { "TitleScene", "GameScene", "ResultScene" };
@@ -168,6 +170,7 @@ void KdDebugGUI::GuiProcess()
 			m_debugType = DebugType::None;
 		}
 	}
+
 
 	ImGui::Spacing();
 

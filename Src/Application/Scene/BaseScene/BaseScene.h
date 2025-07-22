@@ -16,6 +16,11 @@ public :
 	void DrawSprite();
 	void DrawDebug();
 
+	enum class Imgui
+	{
+
+	};
+
 	virtual void OnGui();
 
 	// オブジェクトリストを取得
@@ -42,6 +47,8 @@ protected :
 
 	// 全オブジェクトのアドレスをリストで管理
 	std::list<std::shared_ptr<KdGameObject>> m_objList;
+
+
 
 
 };

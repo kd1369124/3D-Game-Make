@@ -12,6 +12,9 @@ public:
 	void Update()		override;
 	void DrawLit()		override;
 	void DrawUnLit()	override;
+	void DrawSprite()	override;
+
+
 
 	virtual void Setmodel(){}
 
