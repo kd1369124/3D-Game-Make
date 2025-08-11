@@ -2,9 +2,6 @@
 #include"../../Component/Transform/TransformComponent.h"
 void CharacterBase::Init()
 {
-
-	
-	Setmodel();
 }
 
 void CharacterBase::Update()

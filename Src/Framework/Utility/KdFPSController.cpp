@@ -83,13 +83,6 @@ void KdFPSController::Control()
 	if (elapsed < timePerFrame)
 	{
 		double waitTime = timePerFrame - elapsed;
-
-		//if (waitTime > 1.0)
-		//{
-		//	std::unique_lock<std::mutex> lk(m_cvMutex);
-		//	m_cv.wait_for(lk, std::chrono::duration<double, std::milli>(waitTime - 0.5));
-		//}
-
 		// 残りをスピンウェイトで微調整
 		while (true)
 		{

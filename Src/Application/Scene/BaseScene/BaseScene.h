@@ -16,10 +16,6 @@ public :
 	void DrawSprite();
 	void DrawDebug();
 
-	enum class Imgui
-	{
-
-	};
 
 	virtual void OnGui();
 

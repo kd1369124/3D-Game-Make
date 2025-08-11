@@ -10,6 +10,8 @@ public:
 
 	void Update() override;
 
+	void DrawLit() override;
+
 	std::string GetObjectName() const override
 	{
 		return "Player";

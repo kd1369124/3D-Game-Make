@@ -1,7 +1,8 @@
 ﻿#pragma once
 #include "../Component.h"
 
-class TransformComponent : public Component {
+class TransformComponent : public Component
+{
 public:
 	Math::Vector3 m_pos = { 0, 0, 0 };
 	Math::Vector3 m_rot = { 0, 0, 0 };

@@ -15,28 +15,34 @@ void TransformComponent::Update(float dt)
 
 void TransformComponent::OnImGui()
 {
-	float pos[3] = { m_pos.x, m_pos.y, m_pos.z };
-	if (ImGui::DragFloat3("Position", pos, 0.1f)) {
-		m_pos = { pos[0], pos[1], pos[2] };
+
+	//if (ImGui::CollapsingHeader("Transform Component"))
+	{
+
+		float pos[3] = { m_pos.x, m_pos.y, m_pos.z };
+		if (ImGui::DragFloat3("Position", pos, 0.1f)) {
+			m_pos = { pos[0], pos[1], pos[2] };
+		}
+
+		float rot[3] = { m_rot.x, m_rot.y, m_rot.z };
+		if (ImGui::DragFloat3("Rotation", rot, 0.1f)) {
+			m_rot = { rot[0], rot[1], rot[2] };
+		}
+
+		float scale[3] = { m_scale.x, m_scale.y, m_scale.z };
+		if (ImGui::DragFloat3("Scale", scale, 0.1f)) {
+			m_scale = { scale[0], scale[1], scale[2] };
+		}
+
+		ImGui::Checkbox("Use Gizmo", &m_useGizmo);
+
+		if (m_useGizmo) {
+			const char* ops[] = { "Translate", "Rotate", "Scale" };
+			ImGui::Combo("Operation", &m_operation, ops, IM_ARRAYSIZE(ops));
+			ImGui::Checkbox("Local Space", &m_local);
+		}
 	}
 
-	float rot[3] = { m_rot.x, m_rot.y, m_rot.z };
-	if (ImGui::DragFloat3("Rotation", rot, 0.1f)) {
-		m_rot = { rot[0], rot[1], rot[2] };
-	}
-
-	float scale[3] = { m_scale.x, m_scale.y, m_scale.z };
-	if (ImGui::DragFloat3("Scale", scale, 0.1f)) {
-		m_scale = { scale[0], scale[1], scale[2] };
-	}
-
-	ImGui::Checkbox("Use Gizmo", &m_useGizmo);
-
-	if (m_useGizmo) {
-		const char* ops[] = { "Translate", "Rotate", "Scale" };
-		ImGui::Combo("Operation", &m_operation, ops, IM_ARRAYSIZE(ops));
-		ImGui::Checkbox("Local Space", &m_local);
-	}
 }
 
 void TransformComponent::DrawGizmo(const float* view, const float* proj)

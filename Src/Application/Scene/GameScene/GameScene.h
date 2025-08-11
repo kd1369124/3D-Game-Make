@@ -17,4 +17,6 @@ private:
 	void Init()  override;
 	void OnGui() override;
 
+	std::weak_ptr<KdGameObject> m_selected;   // 現在選択中
+
 };

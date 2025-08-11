@@ -1,16 +1,15 @@
 ﻿#pragma once
 class KdGameObject;
-// 基底インターフェース
+// 基底
 class Component {
 public:
 
 	Component(){}
 	virtual ~Component() {}
 
-	// 
+	
 	virtual void Update(float dt) = 0; 
 
-	// 描画
 	virtual void Draw() {}
 
 	virtual void DrawLit() {}
@@ -20,7 +19,7 @@ public:
 	virtual std::string GetComponentName() const { return "Component"; }
 
 	// エディタ
-	virtual void OnImGui() {}
+	virtual void OnImGui() = 0;
 
 	void SetOwner(std::weak_ptr<KdGameObject> owner) { m_owner = owner; }
 

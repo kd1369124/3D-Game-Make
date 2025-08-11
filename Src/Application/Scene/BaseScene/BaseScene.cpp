@@ -160,17 +160,7 @@ void BaseScene::DrawDebug()
 
 void BaseScene::OnGui()
 {
-	if (ImGui::TreeNode("Object List"))
-	{
-		for (auto& obj : m_objList)
-		{
-			if (!obj) continue;
 
-			ImGui::BulletText("%s", obj->GetObjectName().c_str());
-		}
-
-		ImGui::TreePop();
-	}
 }
 
 void BaseScene::Event()

@@ -31,6 +31,9 @@ void KdStandardShader::BeginLit()
 		KdShaderManager::Instance().SetPSConstantBuffer(2, m_cb2_Material.GetAddress());
 	}
 
+	//ボーン情報をセット　（スキンメッシュ対応）
+	KdShaderManager::Instance().SetVSConstantBuffer(3, m_cb3_Bone.GetAddress());
+
 	// シャドウマップのテクスチャをセット
 	KdDirect3D::Instance().WorkDevContext()->PSSetShaderResources(10, 1, m_depthMapFromLightRTPack.m_RTTexture->WorkSRViewAddress());
 
@@ -98,6 +101,9 @@ void KdStandardShader::BeginGenerateDepthMapFromLight()
 		KdShaderManager::Instance().SetVSConstantBuffer(0, m_cb0_Obj.GetAddress());
 		KdShaderManager::Instance().SetVSConstantBuffer(1, m_cb1_Mesh.GetAddress());
 	}
+
+	//ボーン情報をセット　（スキンメッシュ対応）
+	KdShaderManager::Instance().SetVSConstantBuffer(3, m_cb3_Bone.GetAddress());
 
 	if (KdShaderManager::Instance().SetPixelShader(m_PS_GenDepthFromLight))
 	{
@@ -209,6 +215,9 @@ void KdStandardShader::DrawModel(KdModelWork& rModel, const Math::Matrix& mWorld
 		rModel.CalcNodeMatrices();
 	}
 
+	// オブジェクト単位の情報転送（スキンメッシュ対応）
+	SetIsSkinMeshObj(data->IsSkinMesh());
+
 	// オブジェクト単位の情報転送
 	if (m_dirtyCBObj)
 	{
@@ -217,6 +226,24 @@ void KdStandardShader::DrawModel(KdModelWork& rModel, const Math::Matrix& mWorld
 
 	auto& workNodes = rModel.GetNodes();
 	auto& dataNodes = data->GetOriginalNodes();
+
+	//スキンメッシュモデルの場合：ボーン情報を書き込み（スキンメッシュ対応）
+	if (data->IsSkinMesh())
+	{
+		// ノード内からボーン情報を取得
+		for (auto&& nodeIdx : data->GetBoneNodeIndices())
+		{
+			if (nodeIdx >= KdStandardShader::maxBoneBufferSize) { assert(0 && "転送できるボーンの上限数を超えました"); return; }
+
+			auto& dataNode = dataNodes[nodeIdx];
+			auto& workNode = workNodes[nodeIdx];
+
+			// ボーン情報からGPUに渡す行列の計算
+			m_cb3_Bone.Work().mBones[dataNode.m_boneIndex] = dataNode.m_boneInverseWorldMatrix * workNode.m_worldTransform;
+
+			m_cb3_Bone.Write();
+		}
+	}
 
 	// 全描画用メッシュノードを描画
 	for (auto& nodeIdx : data->GetDrawMeshNodeIndices())
@@ -393,19 +420,21 @@ bool KdStandardShader::Init()
 
 		// １頂点の詳細な情報
 		std::vector<D3D11_INPUT_ELEMENT_DESC> layout = {
-			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT,		0,  0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-			{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT,			0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-			{ "COLOR",    0, DXGI_FORMAT_R8G8B8A8_UNORM,		0, 20, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-			{ "NORMAL",   0, DXGI_FORMAT_R32G32B32_FLOAT,		0, 24, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-			{ "TANGENT",  0, DXGI_FORMAT_R32G32B32_FLOAT,		0, 36, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT,        0,  0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT,            0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "COLOR",    0, DXGI_FORMAT_R8G8B8A8_UNORM,        0, 20, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "NORMAL",   0, DXGI_FORMAT_R32G32B32_FLOAT,        0, 24, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "TANGENT",  0, DXGI_FORMAT_R32G32B32_FLOAT,        0, 36, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "SKININDEX",    0, DXGI_FORMAT_R16G16B16A16_UINT,    0, 48,    D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "SKINWEIGHT",    0, DXGI_FORMAT_R32G32B32A32_FLOAT,    0, 56,    D3D11_INPUT_PER_VERTEX_DATA, 0 }
 		};
 
 		// 頂点入力レイアウト作成
 		if (FAILED(KdDirect3D::Instance().WorkDev()->CreateInputLayout(
-			&layout[0],				// 入力エレメント先頭アドレス
-			(UINT)layout.size(),	// 入力エレメント数
-			&compiledBuffer[0],		// 頂点バッファのバイナリデータ
-			sizeof(compiledBuffer),	// 上記のバッファサイズ
+			&layout[0],                // 入力エレメント先頭アドレス
+			layout.size(),            // 入力エレメント数
+			&compiledBuffer[0],        // 頂点バッファのバイナリデータ
+			sizeof(compiledBuffer),    // 上記のバッファサイズ
 			&m_inputLayout))
 			) {
 			assert(0 && "CreateInputLayout失敗");
@@ -475,6 +504,9 @@ bool KdStandardShader::Init()
 	m_cb1_Mesh.Create();
 	m_cb2_Material.Create();
 
+	// スキンメッシュ対応
+	m_cb3_Bone.Create();
+
 	std::shared_ptr<KdTexture> ds = std::make_shared<KdTexture>();
 	ds->CreateDepthStencil(1024, 1024);
 	D3D11_VIEWPORT vp = {
@@ -511,6 +543,9 @@ void KdStandardShader::Release()
 	m_cb0_Obj.Release();
 	m_cb1_Mesh.Release();
 	m_cb2_Material.Release();
+
+	//スキンメッシュ対応
+	m_cb3_Bone.Release();
 }
 
 // ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// ///// /////

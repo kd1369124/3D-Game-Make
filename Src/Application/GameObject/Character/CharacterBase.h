@@ -20,7 +20,9 @@ public:
 
 protected:
 
+
+
 	std::shared_ptr<TransformComponent> m_transform;
-	std::shared_ptr<KdModelWork> m_modelwork;
+	//std::shared_ptr<KdModelWork> m_modelwork;
 
 };

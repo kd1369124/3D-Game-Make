@@ -122,10 +122,18 @@ public:
 		AddComponent,	// コンポーネントの追加
 	};
 
+
+	void ToggleEditor();                 
+	void SetEditorVisible(bool v);
+	bool IsEditorVisible() const { return m_showEditor; }
+
 	void GuiInit();
 	void GuiProcess();
 
 	void AddLog(const char* fmt, ...);
+
+	void CaptureGameViewFromBackbuffer(); 
+
 	
 private:
 	void GuiRelease();
@@ -138,6 +146,16 @@ private:
 	DebugType m_debugType = DebugType::None; // デバッグタイプ
 
 	std::optional<std::future<void>> sceneChangeFuture;
+
+	Microsoft::WRL::ComPtr<ID3D11Texture2D>          m_gameCopyTex;
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_gameCopySRV;
+	int m_gameCopyW = 0, m_gameCopyH = 0;
+
+	void DrawEditorPanels();             // 各ウィンドウ群（Debug Info / Scene など）
+	void ShowMainDockspace();             
+	void BuildDefaultLayout(ImGuiID id);  
+	bool m_layoutBuilt = false;  
+	bool m_showEditor = false;
 
 //=====================================================
 // シングルトンパターン

@@ -6,6 +6,7 @@ cbuffer cbObject : register(b0)
 	
 	int g_FogEnable;	// フォグ有効
 	int g_OnlyEmissie;	// エミッシブの描画だけにするかどうか
+	int g_IsSkinMeshObj; // スキンメッシュオブジェクトかどうか(スキンメッシュ対応スキンメッシュ対応)
 	
 	float g_dissolveValue;		// ディゾルブの閾値
 	float g_dissolveEdgeRange;	// ディゾルブの境界線の太さ
@@ -26,6 +27,13 @@ cbuffer cbMaterial : register(b2)
 	float	g_Metallic;	 // 金属度
 	float	g_Roughness; // 粗さ
 };
+
+//ボーン行列配列（スキンメッシュ対応）
+cbuffer cbMaterial : register(b3)
+{
+	row_major float4x4 g_mBones[300]; // ボーン行列配列
+};
+
 
 // 頂点シェーダから出力するデータ
 struct VSOutput

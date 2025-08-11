@@ -127,6 +127,15 @@
     <Filter Include="Src\Application\JobSystem">
       <UniqueIdentifier>{f64c0208-6433-48bb-b270-7e8a5e44de07}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Application\Component\CameraComponent">
+      <UniqueIdentifier>{d36c4426-425f-4bc6-97dc-9939ea85e8b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Component\AnimeComponent">
+      <UniqueIdentifier>{5873d5eb-c570-4076-889c-ef882c1c717a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\GameObject\Ground">
+      <UniqueIdentifier>{3d817689-5497-42bc-94ed-10f0c1305327}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Pch.h">
@@ -252,28 +261,10 @@
     <ClInclude Include="..\Library\imgui\imconfig.h">
       <Filter>Library\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="..\Library\imgui\imgui.h">
-      <Filter>Library\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Library\imgui\imgui_impl_dx11.h">
-      <Filter>Library\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Library\imgui\imgui_impl_win32.h">
-      <Filter>Library\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Library\imgui\imgui_internal.h">
-      <Filter>Library\imgui</Filter>
-    </ClInclude>
     <ClInclude Include="..\Library\imgui\imgui_stdlib.h">
       <Filter>Library\imgui</Filter>
     </ClInclude>
     <ClInclude Include="..\Library\imgui\imstb_rectpack.h">
-      <Filter>Library\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Library\imgui\imstb_textedit.h">
-      <Filter>Library\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Library\imgui\imstb_truetype.h">
       <Filter>Library\imgui</Filter>
     </ClInclude>
     <ClInclude Include="..\Library\imgui\ja_glyph_ranges.h">
@@ -341,6 +332,33 @@
     </ClInclude>
     <ClInclude Include="Src\Application\JobSystem\JobSystem.h">
       <Filter>Src\Application\JobSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Component\CameraComponent\CameraComp.h">
+      <Filter>Src\Application\Component\CameraComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Component\AnimeComponent\AnimeComponent.h">
+      <Filter>Src\Application\Component\AnimeComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\GameObject\Ground\GroundBase.h">
+      <Filter>Src\Application\GameObject\Ground</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Library\imgui\imgui.h">
+      <Filter>Library\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Library\imgui\imgui_impl_win32.h">
+      <Filter>Library\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Library\imgui\imgui_impl_dx11.h">
+      <Filter>Library\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Library\imgui\imgui_internal.h">
+      <Filter>Library\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Library\imgui\imstb_truetype.h">
+      <Filter>Library\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Library\imgui\imstb_textedit.h">
+      <Filter>Library\imgui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -443,28 +461,7 @@
     <ClCompile Include="Src\Framework\Effekseer\KdEffekseerManager.cpp">
       <Filter>Src\Framework\Effekseer</Filter>
     </ClCompile>
-    <ClCompile Include="..\Library\imgui\imgui.cpp">
-      <Filter>Library\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Library\imgui\imgui_demo.cpp">
-      <Filter>Library\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Library\imgui\imgui_draw.cpp">
-      <Filter>Library\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Library\imgui\imgui_impl_dx11.cpp">
-      <Filter>Library\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Library\imgui\imgui_impl_win32.cpp">
-      <Filter>Library\imgui</Filter>
-    </ClCompile>
     <ClCompile Include="..\Library\imgui\imgui_stdlib.cpp">
-      <Filter>Library\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Library\imgui\imgui_tables.cpp">
-      <Filter>Library\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Library\imgui\imgui_widgets.cpp">
       <Filter>Library\imgui</Filter>
     </ClCompile>
     <ClCompile Include="Src\Framework\Utility\Debug\KdDebugWireFrame.cpp">
@@ -526,6 +523,36 @@
     </ClCompile>
     <ClCompile Include="Src\Application\JobSystem\JobSystem.cpp">
       <Filter>Src\Application\JobSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Component\CameraComponent\CameraComp.cpp">
+      <Filter>Src\Application\Component\CameraComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Component\AnimeComponent\AnimeComponent.cpp">
+      <Filter>Src\Application\Component\AnimeComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\GameObject\Ground\GroundBase.cpp">
+      <Filter>Src\Application\GameObject\Ground</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Library\imgui\imgui_impl_win32.cpp">
+      <Filter>Library\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Library\imgui\imgui_impl_dx11.cpp">
+      <Filter>Library\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Library\imgui\imgui.cpp">
+      <Filter>Library\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Library\imgui\imgui_widgets.cpp">
+      <Filter>Library\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Library\imgui\imgui_draw.cpp">
+      <Filter>Library\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Library\imgui\imgui_demo.cpp">
+      <Filter>Library\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Library\imgui\imgui_tables.cpp">
+      <Filter>Library\imgui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

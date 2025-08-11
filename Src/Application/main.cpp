@@ -152,7 +152,7 @@ bool Application::Init(int w, int h)
 	//===================================================================
 	// ウィンドウ作成
 	//===================================================================
-	if (m_window.Create(w, h, "3D GameProgramming", "Window") == false) {
+	if (m_window.Create(w, h, "3D Game", "Window") == false) {
 		MessageBoxA(nullptr, "ウィンドウ作成に失敗", "エラー", MB_OK);
 		return false;
 	}
@@ -313,6 +313,14 @@ void Application::Execute()
 			PostDraw();
 
 			DrawSprite();
+
+			if (KdDebugGUI::Instance().IsEditorVisible())
+			{
+				// バックバッファをキャプチャ
+				KdDebugGUI::Instance().CaptureGameViewFromBackbuffer();
+
+			}
+
 		}
 		KdPostDraw();
 
@@ -323,9 +331,15 @@ void Application::Execute()
 		//=========================================
 
 		m_fpsController.Update();
+
+		
+		std::string titleBar = "Shift Block FPS:" + std::to_string(m_fpsController.m_nowfps);
+		SetWindowTextA(m_window.GetWndHandle(), titleBar.c_str());
 	}
 
 	m_fpsController.StopSubThread();
+
+
 
 	//===================================================================
 	// アプリケーション解放

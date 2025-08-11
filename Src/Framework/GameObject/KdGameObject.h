@@ -20,7 +20,7 @@ public:
 		Enemy,
 		NoEntity
 	};
-
+	  
 	KdGameObject() {}
 	virtual ~KdGameObject() { Release(); }
 
@@ -41,8 +41,8 @@ public:
 	// それぞれの状況で描画する関数
 	virtual void GenerateDepthMapFromLight() {}
 	virtual void PreDraw()    {}
-	virtual void DrawLit()    { for (auto& comp : m_components) comp->DrawLit(); }
-	virtual void DrawUnLit()  { for (auto& comp : m_components) comp->DrawUnLit(); }
+	virtual void DrawLit() { for (auto& comp : m_components) comp->DrawLit(); }
+	virtual void DrawUnLit() { for (auto& comp : m_components) comp->DrawUnLit(); }
 	virtual void DrawEffect() {}
 	virtual void DrawBright() {}
 	virtual void DrawSprite() { for (auto& comp : m_components) comp->Draw(); }
@@ -102,6 +102,24 @@ public:
 	// 3D空間に存在する機能
 	Math::Matrix	m_mWorld;
 
+
+	// 当たり判定クラス
+	std::unique_ptr<KdCollider> m_pCollider = nullptr;
+
+	// デバッグ情報クラス
+	std::unique_ptr<KdDebugWireFrame> m_pDebugWire = nullptr;
+
+	std::vector<std::shared_ptr<Component>> m_components;
+
+	std::shared_ptr<KdModelWork> m_modelWork = nullptr;
+
+	std::shared_ptr<KdModelData> m_modelData = nullptr;
+
+	std::shared_ptr<KdSquarePolygon> m_squarePolygon = nullptr;
+
+	std::shared_ptr<KdAnimator> m_animator = nullptr;
+
+
 protected:
 
 	void Release() {}
@@ -116,13 +134,6 @@ protected:
 	bool m_isExpired = false;
 
 
-	// 当たり判定クラス
-	std::unique_ptr<KdCollider> m_pCollider = nullptr;
-
-	// デバッグ情報クラス
-	std::unique_ptr<KdDebugWireFrame> m_pDebugWire = nullptr;
-
-	std::vector<std::shared_ptr<Component>> m_components;
 
 	ObjctType m_objtype;
 };
